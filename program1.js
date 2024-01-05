@@ -3,62 +3,22 @@
  * @return {boolean}
  */
 var isValid = function(s) {
-    const stack =[];
-
-   for( i=0; i<s.length;  i++){
-   
-    let x = s[i];
- 
-        if (x == '(' || x == '[' || x == '{')
-        {
-             
-          
-            stack.push(x);
-            continue;
-        }
- 
-        
-        if (stack.length == 0)
-            return false;
-             
-        let check;
-        switch (x){
-        case ')':
-            check = stack.pop();
-            if (check == '{' || check == '[')
+     let i = -1;
+    let stack = [];
+    for (let ch of s) {
+        if (ch === '(' || ch === '{' || ch === '[') {
+            stack.push(ch);
+            i++;
+        } else {
+            if (i >= 0 && ((stack[i] === '(' && ch === ')') || (stack[i] === '{' && ch === '}') || (stack[i] === '[' && ch === ']'))) {
+                stack.pop();
+                i--;
+            } else {
                 return false;
-            break;
- 
-        case '}':
-            check = stack.pop();
-            if (check == '(' || check == '[')
-                return false;
-            break;
- 
-        case ']':
-            check = stack.pop();
-            if (check == '(' || check == '{')
-                return false;
-            break;
+            }
         }
     }
- 
-   
-    return (stack.length == 0);
-}
- 
-
-let s = "([{}])";
- 
-
-if (areBracketsBalanced(s))
-    document.write("Balanced ");
-else{
-    document.write("Not Balanced ");
- 
-
- 
-
+    return i === -1;
 };
 
 module.exports = { isValid };
